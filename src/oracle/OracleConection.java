@@ -18,7 +18,7 @@ public class OracleConection {
             String BaseDeDatos = "jdbc:oracle:thin:@localhost:1521:XE";
             //BD == nombre y usuario de la base de datos
             //123 == contraseña de acceso
-            conexion = DriverManager.getConnection(BaseDeDatos, "PRUEBA", "123");
+            conexion = DriverManager.getConnection(BaseDeDatos, "JAVA", "12345");
         } catch (Exception e) {
             e.printStackTrace();
         }
