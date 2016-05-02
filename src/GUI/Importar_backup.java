@@ -9,12 +9,14 @@ import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import oracle.ConsultasSQL;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Importar_backup extends javax.swing.JFrame {
 
@@ -24,7 +26,7 @@ public class Importar_backup extends javax.swing.JFrame {
     public Importar_backup() {
         consultas = new ConsultasSQL();
         initComponents();
-        initHelp();
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -34,7 +36,6 @@ public class Importar_backup extends javax.swing.JFrame {
         boton_examinar = new javax.swing.JButton();
         nombre_fichero = new javax.swing.JLabel();
         boton_aceptar = new javax.swing.JButton();
-        boton_ayuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -55,38 +56,32 @@ public class Importar_backup extends javax.swing.JFrame {
             }
         });
 
-        boton_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ayuda.gif"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(boton_examinar)
-                .addGap(78, 78, 78)
-                .addComponent(boton_aceptar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(54, Short.MAX_VALUE)
-                .addComponent(nombre_fichero, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addGap(72)
+        			.addComponent(boton_examinar)
+        			.addGap(78)
+        			.addComponent(boton_aceptar)
+        			.addContainerGap(102, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(54, Short.MAX_VALUE)
+        			.addComponent(nombre_fichero, GroupLayout.PREFERRED_SIZE, 306, GroupLayout.PREFERRED_SIZE)
+        			.addGap(40))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(nombre_fichero, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boton_examinar)
-                    .addComponent(boton_aceptar))
-                .addGap(22, 22, 22))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(33)
+        			.addComponent(nombre_fichero, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(boton_examinar)
+        				.addComponent(boton_aceptar))
+        			.addGap(22))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -137,7 +132,6 @@ public class Importar_backup extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton boton_aceptar;
-    private javax.swing.JButton boton_ayuda;
     private javax.swing.JButton boton_examinar;
     private javax.swing.JLabel nombre_fichero;
     // End of variables declaration//GEN-END:variables
@@ -188,19 +182,5 @@ public class Importar_backup extends javax.swing.JFrame {
             consultas.insertFestivo(DNI, fecha, motivo);
         }
     }
-    private void initHelp() {
-          HelpBroker hb;
-          HelpSet helpset ;
-         try {
-            File fichero = new File("help/help_set.hs");
-            URL hsURL = fichero.toURI().toURL();
-            helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-            hb = helpset.createHelpBroker();
-            hb.enableHelpKey(this.getContentPane(), "general", helpset);
-            hb.enableHelpOnButton(boton_ayuda, "ventana_importar", helpset);
-        } catch (Exception e) {
-            //Logger.getLogger(Logeo.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error al cargar la ayuda" + e);
-        }
-    }
+   
 }

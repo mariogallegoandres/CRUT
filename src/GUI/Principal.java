@@ -26,6 +26,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import oracle.ConsultasSQL;
 import usuarios.Usuario;
+import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -43,7 +46,6 @@ public class Principal extends javax.swing.JFrame {
         consultas = new ConsultasSQL();
         usuarioActual = usr;
         initComponents();
-        initHelp();
     }
 
     @SuppressWarnings("unchecked")
@@ -108,8 +110,7 @@ public class Principal extends javax.swing.JFrame {
         menu_usuarios = new javax.swing.JMenu();
         administrar_usuarios = new javax.swing.JMenuItem();
         cambiar_contrasenia = new javax.swing.JMenuItem();
-        menu_permisos = new javax.swing.JMenu();
-        gestion_permisos = new javax.swing.JMenuItem();
+        mnAdministrador = new javax.swing.JMenu();
         menu_backup = new javax.swing.JMenu();
         crear_backup = new javax.swing.JMenuItem();
         restaurar = new javax.swing.JMenuItem();
@@ -483,18 +484,28 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(menu_usuarios);
 
-        menu_permisos.setText("Permisos laborales");
-        menu_permisos.setEnabled(false);
+        mnAdministrador.setText("Administrador");
+        mnAdministrador.setEnabled(false);
 
-        gestion_permisos.setText("Gestionar");
-        gestion_permisos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gestion_permisosActionPerformed(evt);
-            }
-        });
-        menu_permisos.add(gestion_permisos);
-
-        jMenuBar1.add(menu_permisos);
+        jMenuBar1.add(mnAdministrador);
+        gestion_permisos = new javax.swing.JMenuItem();
+       
+                gestion_permisos.setText("Festivos");
+                gestion_permisos.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        gestion_permisosActionPerformed(evt);
+                    }
+                });
+                mnAdministrador.add(gestion_permisos);
+                
+                trabajadores_fichaje = new JMenuItem();
+                trabajadores_fichaje.setText("Diario personal");
+                trabajadores_fichaje.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent evt) {
+                		trabajadores_fichajeActionPerformed(evt);
+                	}
+                });
+                mnAdministrador.add(trabajadores_fichaje);
 
         menu_backup.setText("Copia de seguridad");
         menu_backup.setEnabled(false);
@@ -550,7 +561,8 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //Al abrir la ventana actualiza los datos
+
+	//Al abrir la ventana actualiza los datos
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         cargarDatos();
         mostrarMenusAdmin();
@@ -674,6 +686,11 @@ public class Principal extends javax.swing.JFrame {
         fest.setVisible(true);
     }//GEN-LAST:event_gestion_permisosActionPerformed
 
+    private void trabajadores_fichajeActionPerformed(java.awt.event.ActionEvent evt) {
+	    Diario_personal consulta_fichajes = new Diario_personal();
+	   consulta_fichajes.setVisible(true);    	
+	}
+    
     public static void main(String args[]) throws SQLException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -756,20 +773,21 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenu menu_backup;
     private javax.swing.JMenu menu_fichajes;
-    private javax.swing.JMenu menu_permisos;
+    private javax.swing.JMenu mnAdministrador;
     private javax.swing.JMenu menu_usuarios;
     private javax.swing.JMenuItem restaurar;
     private javax.swing.JMenuItem salir;
     private javax.swing.JTable tabla_festivos;
     private javax.swing.JTable tabla_fichajesDiario;
     private javax.swing.JTable tabla_fichajesTotales;
+    private JMenuItem trabajadores_fichaje;
     // End of variables declaration//GEN-END:variables
 
     private void mostrarMenusAdmin() {
         if (usuarioActual.getCargo().equals("Administrador")) {
             menu_backup.setEnabled(true);
             administrar_usuarios.setEnabled(true);
-            menu_permisos.setEnabled(true);
+            mnAdministrador.setEnabled(true);
         }
     }
 
@@ -975,19 +993,5 @@ public class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     private void initHelp() {
-          HelpBroker hb;
-          HelpSet helpset ;
-         try {
-            File fichero = new File("help/help_set.hs");
-            URL hsURL = fichero.toURI().toURL();
-            helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-            hb = helpset.createHelpBroker();
-            hb.enableHelpKey(this.getContentPane(), "general", helpset);
-            hb.enableHelpOnButton(boton_ayuda, "ventana_principal", helpset);
-        } catch (Exception e) {
-            //Logger.getLogger(Logueo.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error al cargar la ayuda" + e);
-        }
-    }
+    
 }

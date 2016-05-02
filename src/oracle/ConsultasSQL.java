@@ -140,7 +140,27 @@ public class ConsultasSQL {
         }
         return null;
     }
+    
+    public ResultSet getUsuariosPuestos(String fecha) {
+        try {
+            return conexionBD.consultar("SELECT DNI, TIPO, FECHA FROM FICHAJES WHERE TRUNC (FECHA) = TO_DATE ('" + fecha + "', 'DD/MM/YYYY') ORDER BY FECHA DESC");
+       
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
+    public ResultSet getDNINombre(String DNI) {
+        try {
+            return conexionBD.consultar("SELECT DNI, NOMBRE  FROM USUARIOS WHERE DNI =" +DNI);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    
     public boolean insertFichaje(String DNI, String fecha, String tipo) {
         try {
             return conexionBD.ejecutar("INSERT INTO FICHAJES (DNI,FECHA,TIPO) VALUES('" + DNI + "',TO_DATE('" + fecha + "','DD/MM/YYYY HH24:MI:SS'),'" + tipo + "')");

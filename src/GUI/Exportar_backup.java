@@ -3,17 +3,16 @@ package GUI;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
 import javax.swing.JFileChooser;
 import oracle.ConsultasSQL;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
 
 public class Exportar_backup extends javax.swing.JFrame {
 
@@ -25,7 +24,7 @@ public class Exportar_backup extends javax.swing.JFrame {
     public Exportar_backup() {
         consultas = new ConsultasSQL();
         initComponents();
-        initHelp();
+    
     }
 
     @SuppressWarnings("unchecked")
@@ -35,7 +34,6 @@ public class Exportar_backup extends javax.swing.JFrame {
         aceptar = new javax.swing.JButton();
         etiqueta_nombre = new javax.swing.JLabel();
         combo_bbdd = new javax.swing.JComboBox();
-        boton_ayuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -50,38 +48,32 @@ public class Exportar_backup extends javax.swing.JFrame {
 
         combo_bbdd.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "FICHAJES", "USUARIOS", "FESTIVOS" }));
 
-        boton_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ayuda.gif"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(217, Short.MAX_VALUE)
-                .addComponent(aceptar)
-                .addGap(68, 68, 68)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(etiqueta_nombre)
-                .addGap(18, 18, 18)
-                .addComponent(combo_bbdd, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(217, Short.MAX_VALUE)
+        			.addComponent(aceptar)
+        			.addGap(106))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(20)
+        			.addComponent(etiqueta_nombre)
+        			.addGap(18)
+        			.addComponent(combo_bbdd, 0, 212, Short.MAX_VALUE)
+        			.addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiqueta_nombre)
-                    .addComponent(combo_bbdd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(aceptar)
-                        .addGap(25, 25, 25))
-                    .addComponent(boton_ayuda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addContainerGap(30, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(etiqueta_nombre)
+        				.addComponent(combo_bbdd, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGap(18)
+        			.addComponent(aceptar)
+        			.addGap(25))
         );
+        getContentPane().setLayout(layout);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -187,24 +179,9 @@ public class Exportar_backup extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptar;
-    private javax.swing.JButton boton_ayuda;
     private javax.swing.JComboBox combo_bbdd;
     private javax.swing.JLabel etiqueta_nombre;
     // End of variables declaration//GEN-END:variables
 
-private void initHelp() {
-          HelpBroker hb;
-          HelpSet helpset ;
-         try {
-            File fichero = new File("help/help_set.hs");
-            URL hsURL = fichero.toURI().toURL();
-            helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-            hb = helpset.createHelpBroker();
-            hb.enableHelpKey(this.getContentPane(), "general", helpset);
-            hb.enableHelpOnButton(boton_ayuda, "ventana_exportar", helpset);
-        } catch (Exception e) {
-            //Logger.getLogger(Logeo.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error al cargar la ayuda" + e);
-        }
-    }
+
 }

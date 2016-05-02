@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import oracle.ConsultasSQL;
 import org.apache.commons.codec.digest.DigestUtils;
 import usuarios.Usuario;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
 
 public class Cambiar_contrasenia extends javax.swing.JFrame {
 
@@ -25,7 +28,7 @@ public class Cambiar_contrasenia extends javax.swing.JFrame {
         consultas = new ConsultasSQL();
         usuarioActual = usr;
         initComponents();
-        initHelp();
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -46,7 +49,6 @@ public class Cambiar_contrasenia extends javax.swing.JFrame {
         icono_false = new javax.swing.JLabel();
         boton_guardar = new javax.swing.JButton();
         boton_cancelar = new javax.swing.JButton();
-        boton_ayuda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("cambio_contrasenia"); // NOI18N
@@ -131,92 +133,85 @@ public class Cambiar_contrasenia extends javax.swing.JFrame {
             }
         });
 
-        boton_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ayuda.gif"))); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(etiqueta_contraseniaNueva2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(campo_contraseniaNueva2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(etiqueta_contrasenia)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(campo_contraseniaAntigua, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(etiqueta_contraseniaNueva1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(campo_contraseniaNueva, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addGap(39, 39, 39)
-                        .addComponent(campo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(campo_DNI)
-                    .addComponent(boton_Autenticar)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(icono_ok)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(icono_false)))
-                .addContainerGap(46, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(boton_cancelar)
-                .addGap(81, 81, 81)
-                .addComponent(boton_guardar)
-                .addGap(164, 164, 164)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        				.addGroup(layout.createSequentialGroup()
+        					.addGap(55)
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(layout.createSequentialGroup()
+        							.addComponent(etiqueta_contraseniaNueva2)
+        							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        							.addComponent(campo_contraseniaNueva2, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
+        						.addGroup(layout.createSequentialGroup()
+        							.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+        								.addGroup(layout.createSequentialGroup()
+        									.addComponent(etiqueta_contrasenia)
+        									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        									.addComponent(campo_contraseniaAntigua, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE))
+        								.addGroup(layout.createSequentialGroup()
+        									.addComponent(etiqueta_contraseniaNueva1)
+        									.addGap(18)
+        									.addComponent(campo_contraseniaNueva, GroupLayout.PREFERRED_SIZE, 232, GroupLayout.PREFERRED_SIZE)))
+        							.addGap(0, 0, Short.MAX_VALUE))))
+        				.addGroup(layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jLabel4)
+        					.addGap(39)
+        					.addComponent(campo_nombre, GroupLayout.PREFERRED_SIZE, 379, GroupLayout.PREFERRED_SIZE)))
+        			.addPreferredGap(ComponentPlacement.UNRELATED)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(campo_DNI)
+        				.addComponent(boton_Autenticar)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(icono_ok)
+        					.addPreferredGap(ComponentPlacement.RELATED)
+        					.addComponent(icono_false)))
+        			.addContainerGap(46, Short.MAX_VALUE))
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(0, 188, Short.MAX_VALUE)
+        			.addComponent(boton_cancelar)
+        			.addGap(81)
+        			.addComponent(boton_guardar)
+        			.addGap(202))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(campo_DNI)
-                            .addComponent(campo_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiqueta_contrasenia)
-                    .addComponent(campo_contraseniaAntigua, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(boton_Autenticar))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiqueta_contraseniaNueva1)
-                    .addComponent(campo_contraseniaNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(campo_contraseniaNueva2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(etiqueta_contraseniaNueva2))
-                    .addComponent(icono_ok)
-                    .addComponent(icono_false, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boton_guardar)
-                    .addComponent(boton_cancelar))
-                .addGap(33, 33, 33))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+        	layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(layout.createSequentialGroup()
+        			.addGap(32)
+        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(layout.createSequentialGroup()
+        					.addComponent(jLabel4)
+        					.addPreferredGap(ComponentPlacement.UNRELATED))
+        				.addGroup(layout.createSequentialGroup()
+        					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(campo_DNI)
+        						.addComponent(campo_nombre, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+        					.addGap(35)))
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(etiqueta_contrasenia)
+        				.addComponent(campo_contraseniaAntigua, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(boton_Autenticar))
+        			.addGap(28)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(etiqueta_contraseniaNueva1)
+        				.addComponent(campo_contraseniaNueva, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGap(28)
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(campo_contraseniaNueva2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(etiqueta_contraseniaNueva2))
+        				.addComponent(icono_ok)
+        				.addComponent(icono_false, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+        			.addPreferredGap(ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+        			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(boton_guardar)
+        				.addComponent(boton_cancelar))
+        			.addGap(33))
         );
+        getContentPane().setLayout(layout);
 
         pack();
         setLocationRelativeTo(null);
@@ -324,7 +319,6 @@ public class Cambiar_contrasenia extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton boton_Autenticar;
-    private javax.swing.JButton boton_ayuda;
     private javax.swing.JButton boton_cancelar;
     private javax.swing.JButton boton_guardar;
     public static javax.swing.JLabel campo_DNI;
@@ -358,19 +352,5 @@ public class Cambiar_contrasenia extends javax.swing.JFrame {
         }
     }
     
-    private void initHelp() {
-          HelpBroker hb;
-          HelpSet helpset ;
-         try {
-            File fichero = new File("help/help_set.hs");
-            URL hsURL = fichero.toURI().toURL();
-            helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-            hb = helpset.createHelpBroker();
-            hb.enableHelpKey(this.getContentPane(), "general", helpset);
-            hb.enableHelpOnButton(boton_ayuda, "ventana_mod_contra", helpset);
-        } catch (Exception e) {
-            //Logger.getLogger(Logeo.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error al cargar la ayuda" + e);
-        }
-    }
+   
 }
