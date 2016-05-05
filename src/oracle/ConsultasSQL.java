@@ -125,8 +125,12 @@ public class ConsultasSQL {
 
     public ResultSet getFestivosUsr(String DNI, String fecha) {
         try {
-            return conexionBD.consultar("SELECT  TO_CHAR(FECHA,'dd/MM/yyyy') AS FECHA,MOTIVO FROM FESTIVOS WHERE DNI=" + DNI + " and to_char(fecha,'MM/YYYY')='" + fecha + "'");
-        } catch (SQLException ex) {
+        	if(fecha.length() ==10){
+        		return conexionBD.consultar("SELECT  TO_CHAR(FECHA,'dd/MM/yyyy') AS FECHA,MOTIVO FROM FESTIVOS WHERE DNI=" + DNI + " and to_char(fecha,'DD/MM/YYYY')='" + fecha + "'");
+        	}else{
+        		return conexionBD.consultar("SELECT  TO_CHAR(FECHA,'dd/MM/yyyy') AS FECHA,MOTIVO FROM FESTIVOS WHERE DNI=" + DNI + " and to_char(fecha,'MM/YYYY')='" + fecha + "'");
+        	}
+        	} catch (SQLException ex) {
             Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

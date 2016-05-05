@@ -5,8 +5,14 @@ import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -35,8 +41,9 @@ public class Diario_personal extends JFrame {
 	private JTable tabla_trabajando;
 	private JTable tabla_finJornada;
 	private JTable tabla_ausentes;
-	   private ResultSet resultCons = null;
-	   private ResultSet resultConsFestivos = null;
+	private ResultSet resultCons = null;
+	private ResultSet resultConsFestivos = null;
+	private ResultSet resultConsultaDatos = null;
 
     
 	 /**
@@ -53,10 +60,6 @@ public class Diario_personal extends JFrame {
 					e.printStackTrace();
 				}
 			}
-
-			private void initComponent() {
-				
-			}
 		});
 	}
 
@@ -65,12 +68,12 @@ public class Diario_personal extends JFrame {
 	 */
 	public Diario_personal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 361, 611);
+		setBounds(100, 100, 600, 611);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		JScrollPane panelScroll = new JScrollPane();
-		panelScroll.setBounds(20, 34, 315, 143);
+		panelScroll.setBounds(20, 34, 533, 143);
 		contentPane.add(panelScroll);
 		  
 		consultas = new ConsultasSQL();
@@ -87,7 +90,7 @@ public class Diario_personal extends JFrame {
 		  contentPane.add(lblEnElPuesto);
 		  
 		  JScrollPane scrollPane = new JScrollPane();
-		  scrollPane.setBounds(20, 218, 315, 143);
+		  scrollPane.setBounds(20, 218, 533, 143);
 		  contentPane.add(scrollPane);
 		 
 		  tabla_finJornada = new JTable();
@@ -99,7 +102,7 @@ public class Diario_personal extends JFrame {
 		  contentPane.add(lblHanTerminadoSu);
 		  
 		  JScrollPane scrollPane_1 = new JScrollPane();
-		  scrollPane_1.setBounds(20, 400, 315, 143);
+		  scrollPane_1.setBounds(20, 400, 533, 143);
 		  contentPane.add(scrollPane_1);
 		  
 		  tabla_ausentes = new JTable();
@@ -113,7 +116,7 @@ public class Diario_personal extends JFrame {
 	    try {
 			calcularTrabajadoresEnEmpresa();
 			llenarTablas();
-		} catch (SQLException e) {
+		} catch (SQLException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
@@ -122,7 +125,7 @@ public class Diario_personal extends JFrame {
 		
 		
 	}
-private void llenarTablas() throws SQLException {
+private void llenarTablas() throws SQLException, ParseException {
 				
 		int columnas = 4;
 		int numColumnas;
@@ -138,7 +141,16 @@ private void llenarTablas() throws SQLException {
 		modelo_trabajando.addColumn("DNI");
 		modelo_trabajando.addColumn("Nombre");
 		modelo_trabajando.addColumn("Hora entrada");
+		modelo_trabajando.addColumn("Horas realizadas");
 	
+		TableColumn columnaDNI = tabla_trabajando.getColumn("DNI");
+		columnaDNI.setPreferredWidth(2);
+		TableColumn columnaNombre = tabla_trabajando.getColumn("DNI");
+		columnaNombre.setPreferredWidth(7);
+		TableColumn columnaHora = tabla_trabajando.getColumn("Hora entrada");
+		columnaHora.setPreferredWidth(2);
+		
+		
         for(int j =0 ; j <entradas.size();j=j+2){
         	 numColumnas =0;
         	 DNI = entradas.get(j).toString();
@@ -150,7 +162,8 @@ private void llenarTablas() throws SQLException {
         	 fecha = entradas.get(j+1).toString();
         	 hora = fecha.substring(11, 19);
         	 fila[numColumnas+2] = hora;
-        	modelo_trabajando.addRow(fila);
+        	 fila[numColumnas+3] =  horasRealizadas(DNI);
+        	 modelo_trabajando.addRow(fila);
         }
       //añadir trabajadores fin de turno
       DefaultTableModel modelo_finJornada = new DefaultTableModel();
@@ -160,8 +173,15 @@ private void llenarTablas() throws SQLException {
       modelo_finJornada.addColumn("DNI");
       modelo_finJornada.addColumn("Nombre");
       modelo_finJornada.addColumn("Hora salida");
+      modelo_finJornada.addColumn("Hora realizadas");
     
-        
+      columnaDNI =  tabla_finJornada.getColumn("DNI");
+		columnaDNI.setPreferredWidth(2);
+	   columnaNombre =  tabla_finJornada.getColumn("DNI");
+		columnaNombre.setPreferredWidth(7);
+		 columnaHora =  tabla_finJornada.getColumn("Hora salida");
+		columnaHora.setPreferredWidth(2);
+       
         for(int j =0 ; j <salidas.size();j=j+2){
        	 numColumnas =0;
        	 DNI = salidas.get(j).toString();
@@ -173,7 +193,7 @@ private void llenarTablas() throws SQLException {
        	 fecha = salidas.get(j+1).toString();
        	 hora = fecha.substring(11, 19);
        	 fila[numColumnas+2] = hora;
-       	
+       	 fila[numColumnas+3] = horasRealizadas(DNI);
        	modelo_finJornada.addRow(fila);
        }
         
@@ -200,7 +220,7 @@ private void llenarTablas() throws SQLException {
              StringTokenizer st = new StringTokenizer(fecha, "/");
              dia = st.nextToken();
              mesAnio = st.nextToken();
-             mesAnio = mesAnio + "/" + st.nextToken();
+             mesAnio =dia+ "/"+ mesAnio + "/" + st.nextToken();
         	 resultConsFestivos = consultas.getFestivosUsr(DNI, mesAnio);
         	 if(resultConsFestivos.next()){
         		 motivo = resultConsFestivos.getObject(2).toString();
@@ -208,13 +228,65 @@ private void llenarTablas() throws SQLException {
         		 motivo = "SIN MOTIVO";
         	 }
         	 fila[numColumnas+2] = motivo;
+        	
              modelo_ausentes.addRow(fila);
     	  }
       }
       
         
 	}
-
+private String horasRealizadas(String DNI) throws SQLException, ParseException{
+	 resultCons = consultas.getFichajeUsrDiario(DNI, obtenerFecha());
+	 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+	 int numDatos=0;
+	 Date entrada = null, salida = null;
+	 String date;
+	 long tiempo = 0;
+	 
+	 DateFormat df = new SimpleDateFormat("HH 'hours', mm 'mins,' ss 'seconds'");
+     df.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+	 
+	 while(resultCons.next()){
+		numDatos++;	 
+	 }
+	 resultConsultaDatos = consultas.getFichajeUsrDiario(DNI, obtenerFecha());
+	 System.out.println(numDatos);
+	 if(numDatos%2 == 0){
+		 numDatos = 0;
+		 while(resultConsultaDatos.next()){
+			 
+	        	if(numDatos%2 == 0){
+	        		salida = formatter.parse(resultConsultaDatos.getObject(3).toString());
+	        		numDatos++;
+	        	}else{
+	        		entrada =formatter.parse(resultConsultaDatos.getObject(3).toString());
+	        		 tiempo += salida.getTime() - entrada.getTime();
+	        		 numDatos++;
+	        	} 
+	        } 
+		 
+		 return df.format(new Date(tiempo));
+	 }else{
+		 date = obtenerFecha() + " " + obtenerHora();
+         salida = formatter.parse(date);
+         resultConsultaDatos.next();
+         entrada = formatter.parse(resultConsultaDatos.getObject(3).toString());
+         tiempo = salida.getTime() - entrada.getTime();
+         numDatos = 0;
+         while(resultConsultaDatos.next()){
+        	if(numDatos%2 == 0){
+        		salida = formatter.parse(resultConsultaDatos.getObject(3).toString());
+        		numDatos++;
+        	}else{
+        		entrada =formatter.parse(resultConsultaDatos.getObject(3).toString());
+        		 tiempo += salida.getTime() - entrada.getTime();
+        		 numDatos++;
+        	} 
+        }  
+         return df.format(new Date(tiempo));	
+	 }
+	
+}
 private void calcularTrabajadoresEnEmpresa() throws SQLException {
 	 ResultSetMetaData metaDatos;
 	
@@ -243,7 +315,19 @@ private void calcularTrabajadoresEnEmpresa() throws SQLException {
 		 }
 	 }
 	 
-
+	private String obtenerHora() {
+		    Calendar calendario = Calendar.getInstance();
+		    int hora, minutos, segundos;
+		    String hour;
+		
+		    hora = calendario.get(Calendar.HOUR_OF_DAY);
+		    minutos = calendario.get(Calendar.MINUTE);
+		    segundos = calendario.get(Calendar.SECOND);
+		
+		    hour = Integer.toString(hora) + ":" + Integer.toString(minutos) + ":" + Integer.toString(segundos);
+		
+		    return hour;
+		}
 
 	  private String obtenerFecha() {
 	        java.util.Date date = new java.util.Date();
