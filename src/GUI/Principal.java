@@ -29,9 +29,11 @@ import usuarios.Usuario;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import pdf.GenerarInforme;
 
 public class Principal extends javax.swing.JFrame {
 
+	private GenerarInforme generar = new GenerarInforme();
     private ConsultasSQL consultas;
     private ResultSet resultCons = null;
     private static Usuario usuarioActual;
@@ -52,6 +54,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	
         jMenuBar2 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -115,6 +118,9 @@ public class Principal extends javax.swing.JFrame {
         crear_backup = new javax.swing.JMenuItem();
         restaurar = new javax.swing.JMenuItem();
 
+        menu_informes = new javax.swing.JMenu();
+        informe_mensual = new javax.swing.JMenuItem();
+        informe_mensual_usuario = new javax.swing.JMenuItem();
         jMenu2.setText("File");
         jMenuBar2.add(jMenu2);
 
@@ -528,6 +534,38 @@ public class Principal extends javax.swing.JFrame {
         menu_backup.add(restaurar);
 
         jMenuBar1.add(menu_backup);
+        
+        menu_informes.setText("Generar Informe"); 
+        informe_mensual.setText("Informe Mensual");
+        informe_mensual_usuario.setText("Informe Mensual Usuario");
+        menu_informes.add(informe_mensual);
+        menu_informes.add(informe_mensual_usuario);
+        menu_informes.setEnabled(false);
+        jMenuBar1.add(menu_informes);
+        
+        informe_mensual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+					informeMensualActionPerformed(evt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
+        
+        informe_mensual_usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+					informeMensualUsuarioActionPerformed(evt);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }
+        });
+        
+       
 
         setJMenuBar(jMenuBar1);
 
@@ -577,6 +615,14 @@ public class Principal extends javax.swing.JFrame {
             calcularHoras(tabla_fichajesTotales, campo_horasTotales);
         }
     }//GEN-LAST:event_formWindowOpened
+    
+    private void informeMensualActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_cerrar_sesionActionPerformed
+       generar.generarInformeMensual();
+    }//GEN-LAST:event_cerrar_sesionActionPerformed
+    
+    private void informeMensualUsuarioActionPerformed(java.awt.event.ActionEvent evt) throws Exception{//GEN-FIRST:event_cerrar_sesionActionPerformed
+       
+    }//GEN-LAST:event_cerrar_sesionActionPerformed
 
     private void cerrar_sesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrar_sesionActionPerformed
         this.dispose();
@@ -615,6 +661,7 @@ public class Principal extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "NO SE PUEDE INICIAR UNA ENTRADA, SIN PRODUCIRSE UNA SALIDA");
                 } else {
                     if (usuarioActual.getHorasMensualesTraba() >= (usuarioActual.getNumeroHoras()*3600000)) {
+                    	
                         JOptionPane.showMessageDialog(null, "SUPERADAS LAS HORAS MENSUALES, NO SE PERMITE REALIZAR HORAS EXTRA");
                     }else{
                     consultas.insertFichaje(usuarioActual.getDni(), fecha, "INGRESO");
@@ -775,12 +822,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu menu_fichajes;
     private javax.swing.JMenu mnAdministrador;
     private javax.swing.JMenu menu_usuarios;
+    private javax.swing.JMenu menu_informes;
+    private javax.swing.JMenuItem informe_mensual;
+    private javax.swing.JMenuItem informe_mensual_usuario;
     private javax.swing.JMenuItem restaurar;
     private javax.swing.JMenuItem salir;
     private javax.swing.JTable tabla_festivos;
     private javax.swing.JTable tabla_fichajesDiario;
     private javax.swing.JTable tabla_fichajesTotales;
     private JMenuItem trabajadores_fichaje;
+    
+   
     // End of variables declaration//GEN-END:variables
 
     private void mostrarMenusAdmin() {
@@ -788,6 +840,7 @@ public class Principal extends javax.swing.JFrame {
             menu_backup.setEnabled(true);
             administrar_usuarios.setEnabled(true);
             mnAdministrador.setEnabled(true);
+            menu_informes.setEnabled(true);
         }
     }
 

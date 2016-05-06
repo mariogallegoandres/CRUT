@@ -96,6 +96,16 @@ public class ConsultasSQL {
         return null;
     }
 
+    
+    public ResultSet getUsuariosDNI() {
+        try {
+            return conexionBD.consultar("SELECT DNI FROM USUARIOS");
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     public ResultSet getFichajesUsrMensuales(String DNI, String fecha) {
         try {
             return conexionBD.consultar("select ID_FICHAJE,DNI, TO_CHAR(FECHA,'dd/MM/yyyy hh24:mi:ss') AS FECHA ,tipo FROM FICHAJES where to_char(fecha,'MM/YYYY')='" + fecha + "' and DNI= " + DNI + " order by FECHA DESC");
