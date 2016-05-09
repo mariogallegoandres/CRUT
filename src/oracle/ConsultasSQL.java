@@ -145,7 +145,14 @@ public class ConsultasSQL {
         }
         return null;
     }
-
+    public ResultSet getFestivosUsrAño(String DNI, int año) {
+        try {
+           return conexionBD.consultar("SELECT DNI, TO_CHAR(FECHA,'dd/MM/yyyy hh24:mi:ss') AS FECHA,MOTIVO  FROM FESTIVOS WHERE  to_char(fecha,'YYYY')='"+año+"'  AND  DNI ="+DNI+" ORDER BY FECHA DESC");
+        	} catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
     public ResultSet getFestivos() {
         try {
             return conexionBD.consultar("SELECT ID_FESTIVO,DNI, TO_CHAR(FECHA,'dd/MM/yyyy'), MOTIVO FROM FESTIVOS");
@@ -247,6 +254,15 @@ public class ConsultasSQL {
     public boolean deleteUsuario(String DNI) {
         try {
             return conexionBD.ejecutar("DELETE FROM USUARIOS WHERE DNI=" + DNI);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public boolean deleteFestivo(String DNI, String fecha) {
+        try {
+            return conexionBD.ejecutar("DELETE FROM FESTIVOS WHERE DNI="+DNI+ "and to_char(fecha,'DD/MM/YYYY')='"+fecha+"'");
         } catch (SQLException ex) {
             Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
         }

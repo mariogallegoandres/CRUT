@@ -940,7 +940,12 @@ public class Principal extends javax.swing.JFrame {
     private void llenarDatosFichajes(JTable tabla, String tipo, String fechaBus) {
         try {
             ResultSetMetaData metaDatos;
-            DefaultTableModel modelo = new DefaultTableModel();
+            DefaultTableModel modelo = new DefaultTableModel(){
+ 			   @Override
+ 			  public boolean isCellEditable (int fila, int columna) {
+ 		        return false;
+ 		    }
+ 		   };
             tabla.setModel(modelo);
             String fecha = obtenerFecha();
 
@@ -1010,7 +1015,13 @@ public class Principal extends javax.swing.JFrame {
     private void cargarVacaciones(JTable tabla, String tipo, String fechaBus) {
         try {
             ResultSetMetaData metaDatos;
-            DefaultTableModel modelo = new DefaultTableModel();
+            DefaultTableModel modelo = new DefaultTableModel()
+            {
+ 			   @Override
+ 			  public boolean isCellEditable (int fila, int columna) {
+ 		        return false;
+ 		    }
+ 		   };
             tabla.setModel(modelo);
             if (!tipo.equalsIgnoreCase("BUSQUEDA")) {
                 String fecha = obtenerFecha();

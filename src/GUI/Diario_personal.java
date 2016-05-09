@@ -133,7 +133,13 @@ private void llenarTablas() throws SQLException, ParseException {
         Object[] fila = new Object[columnas];
         Renderer r = new Renderer();  
         //añadir trabajadores que han fichado
-        DefaultTableModel modelo_trabajando = new DefaultTableModel();
+        DefaultTableModel modelo_trabajando = new DefaultTableModel(){  
+        	@Override
+			  public boolean isCellEditable (int fila, int columna) {
+	        return false;
+	    }
+	   };
+        		
         tabla_trabajando.setModel(modelo_trabajando);
         tabla_trabajando.setName("tabla_trabajando");
         tabla_trabajando.setDefaultRenderer(Object.class, r);
@@ -166,7 +172,13 @@ private void llenarTablas() throws SQLException, ParseException {
         	 modelo_trabajando.addRow(fila);
         }
       //añadir trabajadores fin de turno
-      DefaultTableModel modelo_finJornada = new DefaultTableModel();
+      DefaultTableModel modelo_finJornada = new DefaultTableModel(){  
+      	@Override
+			  public boolean isCellEditable (int fila, int columna) {
+	        return false;
+	    }
+	   };
+    		  
       tabla_finJornada.setModel(modelo_finJornada);
       tabla_finJornada.setName("tabla_finJornada");
       tabla_finJornada.setDefaultRenderer(Object.class, r);
@@ -200,7 +212,12 @@ private void llenarTablas() throws SQLException, ParseException {
         
        //añadir trabajadores que hoy no han ido a trabajar 
         
-        DefaultTableModel modelo_ausentes = new DefaultTableModel();
+        DefaultTableModel modelo_ausentes = new DefaultTableModel(){  
+        	@Override
+			  public boolean isCellEditable (int fila, int columna) {
+	        return false;
+	    }
+	   };
         tabla_ausentes.setModel(modelo_ausentes);
         tabla_ausentes.setName("tabla_ausentes");
         tabla_ausentes.setDefaultRenderer(Object.class, r);
@@ -336,3 +353,4 @@ private void calcularTrabajadoresEnEmpresa() throws SQLException {
 	        return fecha;
 	    }
 }
+

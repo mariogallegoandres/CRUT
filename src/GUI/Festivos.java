@@ -1,252 +1,383 @@
 package GUI;
 
-import java.io.File;
-import java.net.URL;
+
+import java.awt.EventQueue;
+import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.help.HelpBroker;
-import javax.help.HelpSet;
-import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 import oracle.ConsultasSQL;
+import usuarios.Usuario;
 
-public class Festivos extends javax.swing.JFrame {
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-    private ConsultasSQL consultas;
-    ResultSet consulta;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import javax.swing.JScrollPane;
+import java.awt.Label;
+import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JRadioButton;
+import com.toedter.calendar.JDateChooser;
+import javax.swing.JTextPane;
+import java.awt.Color;
+import java.awt.SystemColor;
 
-    public Festivos() {
-        consultas = new ConsultasSQL();
-        initComponents();
-        llenarComboUser();
-        initHelp();
-    }
+public class Festivos extends JFrame {
 
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+	private JPanel contentPane;
+	public static ResultSet consulta = null;
+	public static ResultSetMetaData metaDatos;
+	private final ConsultasSQL consultas  = new ConsultasSQL();;
+	private ResultSet resultCons = null;
+	public int[] rowSelect ;
+	
+	
+	private JTable table;
 
-        etiqueta_DNI = new javax.swing.JLabel();
-        etiqueta_fecha = new javax.swing.JLabel();
-        etiqueta_motivo = new javax.swing.JLabel();
-        campo_fecha = new javax.swing.JTextField();
-        campo_motivo = new javax.swing.JTextField();
-        check_todos = new javax.swing.JCheckBox();
-        boton_Aceptar = new javax.swing.JButton();
-        combo_DNI = new javax.swing.JComboBox();
-        boton_salir = new javax.swing.JButton();
-        boton_ayuda = new javax.swing.JButton();
+	public JDateChooser dateChooser;
+	public JRadioButton rdbtnAadirATodos;
+	public int[] indicesfilasSeleccionadas;
+	
+	JComboBox comboBox;
+	private JLabel lblNombre;
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+    String DNI,fecha,motivo;
+    int año;
+    int columnas, numColumna;
+    
+    boolean todos, resAñadir=false,resEliminar=false;
+    private JTextField textMotivo;
 
-        etiqueta_DNI.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        etiqueta_DNI.setText("DNI");
 
-        etiqueta_fecha.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        etiqueta_fecha.setText("Fecha");
+	/**
+	 * Create the frame.
+	 */
+	public Festivos() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 600, 350);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		JScrollPane panelScroll = new JScrollPane();
+		panelScroll.setBounds(10, 53, 304, 230);
+		contentPane.add(panelScroll);
+		  
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		contentPane.setLayout(null);
+		  
+		
+		table = new JTable();
+		
+		panelScroll.setViewportView(table);
+		table.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+		
+		Label label = new Label("DNI");
+		label.setBounds(40, 25, 30, 22);
+		contentPane.add(label);
+		
+		comboBox = new JComboBox();
+		lblNombre = new JLabel("Nombre");
+		lblNombre.setBounds(257, 28, 152, 14);
+		contentPane.add(lblNombre);	
+		
+		comboBox.addActionListener(new java.awt.event.ActionListener() {
+	            public void actionPerformed(java.awt.event.ActionEvent evt) {
+	            	resultCons = consultas.getDNINombre(comboBox.getSelectedItem().toString());
+	            	try {
+						resultCons.next();
+						DNI =  resultCons.getObject(1).toString();
+						lblNombre.setText(resultCons.getObject(2).toString());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            	
+	            	
+	                try {
+						llenarTabla();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	            }
+	        });
+		comboBox.setBounds(87, 25, 152, 20);
+		contentPane.add(comboBox);
+		
+		JButton btnConfirmar = new JButton("Confirmar");
+		
+		btnConfirmar.setBounds(402, 260, 108, 23);
+		contentPane.add(btnConfirmar);
+		
+		final JToggleButton tglbtnAadir = new JToggleButton("A\u00F1adir");
+		tglbtnAadir.setBounds(353, 50, 71, 23);
+		contentPane.add(tglbtnAadir);
+		
+		final JToggleButton tglbtnEliminar = new JToggleButton("Eliminar");
+		
+		tglbtnEliminar.setBounds(490, 50, 84, 23);
+		contentPane.add(tglbtnEliminar);
+		
+		final JPanel panelAnia = new JPanel();
+		panelAnia.setBounds(363, 78, 221, 171);
+		contentPane.add(panelAnia);
+		panelAnia.setLayout(null);
+		
+		textMotivo = new JTextField();
+		textMotivo.setBounds(66, 81, 145, 20);
+		panelAnia.add(textMotivo);
+		textMotivo.setColumns(10);
+		
+		final JLabel lblMotivo = new JLabel("Motivo");
+		lblMotivo.setBounds(10, 84, 46, 14);
+		panelAnia.add(lblMotivo);
+		
+		rdbtnAadirATodos = new JRadioButton("A\u00F1adir a todos");
+		rdbtnAadirATodos.setBounds(94, 142, 124, 23);
+		panelAnia.add(rdbtnAadirATodos);
+		
+		dateChooser = new JDateChooser();
+		dateChooser.setDateFormatString("dd-MM-yyyy");
+		dateChooser.setBounds(69, 30, 95, 20);
+		Calendar fechaSelec = Calendar.getInstance();
+		dateChooser.setMinSelectableDate(fechaSelec.getTime());
+		
+		panelAnia.add(dateChooser);
+		
+		JLabel lblFecha = new JLabel("Fecha");
+		lblFecha.setBounds(10, 30, 46, 14);
+		panelAnia.add(lblFecha);	
+		
+		final JPanel panelElimin = new JPanel();
+		panelElimin.setBounds(363, 78, 218, 171);
+		contentPane.add(panelElimin);
+		panelElimin.setLayout(null);
+		
+		JLabel lblDiasAEliminar = new JLabel("Dias a eliminar");
+		lblDiasAEliminar.setBounds(10, 11, 123, 14);
+		panelElimin.add(lblDiasAEliminar);
+		
+		final JTextPane diasEliminar = new JTextPane();
+		diasEliminar.setBackground(SystemColor.menu);
+		diasEliminar.setBounds(20, 38, 188, 110);
+		panelElimin.add(diasEliminar);
+		
+		tglbtnAadir.setSelected(true);
+		panelElimin.setVisible(false);
+		rowSelect = table.getSelectedRows();
+		
+		tglbtnAadir.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				tglbtnEliminar.setSelected(false);
+				panelAnia.setVisible(true);
+				panelElimin.setVisible(false);
+				diasEliminar.setText(" ");
+				
+			}
+		});
+		
+		tglbtnEliminar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				tglbtnAadir.setSelected(false);
+				panelAnia.setVisible(false);
+				textMotivo.setText(" ");
+				dateChooser.setDate(null);
+				rdbtnAadirATodos.setSelected(false);
+				panelElimin.setVisible(true);
+			}
+		});
+		
+		btnConfirmar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(panelAnia.isVisible()){
+					try {
+						añadirEnBBDD();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}else{
+					try {
+						eliminarEnBBDD();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent e) {
+				String selection = "";
 
-        etiqueta_motivo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        etiqueta_motivo.setText("Motivo");
+				rowSelect = table.getSelectedRows();
+				for(int j= 0; j<rowSelect.length;j++){
+					for (int i = 0; i < table.getColumnCount(); i++) {
+						selection+=" " +table.getValueAt(rowSelect[j], i).toString();
+					}
+					selection += '\n';
+				}
+				diasEliminar.setText(selection);
+			}
+		});
+		
+	  llenarCombo();
+	  try {
+		llenarTabla();
+		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	}
 
-        check_todos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        check_todos.setText("Asignar a todos");
-        check_todos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                check_todosActionPerformed(evt);
-            }
-        });
-
-        boton_Aceptar.setText("Aceptar");
-        boton_Aceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton_AceptarActionPerformed(evt);
-            }
-        });
-
-        combo_DNI.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        boton_salir.setText("Salir");
-        boton_salir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                boton_salirActionPerformed(evt);
-            }
-        });
-
-        boton_ayuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/ayuda.gif"))); // NOI18N
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(etiqueta_DNI)
-                    .addComponent(etiqueta_fecha)
-                    .addComponent(etiqueta_motivo))
-                .addGap(93, 93, 93)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(campo_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(campo_motivo, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(combo_DNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(70, 70, 70)
-                        .addComponent(check_todos)))
-                .addContainerGap(23, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(boton_Aceptar)
-                .addGap(34, 34, 34)
-                .addComponent(boton_salir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(etiqueta_DNI)
-                    .addComponent(combo_DNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(check_todos))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(etiqueta_fecha)
-                            .addComponent(campo_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(etiqueta_motivo)
-                            .addComponent(campo_motivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(boton_Aceptar)
-                            .addComponent(boton_salir))
-                        .addGap(29, 29, 29))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(boton_ayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void boton_AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_AceptarActionPerformed
-        String DNI, fecha, motivo;
-
-        fecha = campo_fecha.getText();
-        motivo = campo_motivo.getText();
-        boolean res;
-
-        if (!check_todos.isSelected()) {
-            DNI = combo_DNI.getSelectedItem().toString();
-            res = consultas.insertFestivo(DNI, fecha, motivo);
-            if (res == false) {
-                JOptionPane.showMessageDialog(null, "No se ha podido realizar el ingreso");
-            }
-        } else {
-            for (int i = 0; i < combo_DNI.getItemCount(); i++) {
-                DNI = combo_DNI.getItemAt(i).toString();
-                res = consultas.insertFestivo(DNI, fecha, motivo);
-                if (res == false) {
-                    JOptionPane.showMessageDialog(null, "No se ha podido realizar el ingreso");
-
-                }
-            }
+	private void añadirEnBBDD() throws SQLException {
+		DNI = comboBox.getSelectedItem().toString();
+		fecha = ((JTextField)dateChooser.getDateEditor().getUiComponent()).getText();
+		if(fecha.equals("")){
+			fecha = "";
+		}else{
+			
+			fecha =new SimpleDateFormat("dd/MM/yyyy").format(dateChooser.getDate());
+		}
+		motivo = textMotivo.getText().toString();
+		todos = rdbtnAadirATodos.isSelected();
+		if(DNI.isEmpty()||fecha.isEmpty()||motivo.isEmpty()){
+			JOptionPane.showMessageDialog(null, "Falta un dato obligatorio");		
+		}else{
+			if (!todos){
+				resultCons = consultas.getFestivosUsr(DNI, fecha);
+				if(resultCons.next()){
+					 JOptionPane.showMessageDialog(null, "Ya ha tiene dia de permiso asignado");
+				}else{
+					resAñadir = consultas.insertFestivo(DNI, fecha, motivo);
+					if (resAñadir == false) {
+						JOptionPane.showMessageDialog(null, "No se ha podido realizar el ingreso");
+					}
+				}
+	        } else {
+	            for (int i = 0; i < comboBox.getItemCount(); i++) {
+	                DNI = comboBox.getItemAt(i).toString();
+	                
+	                resultCons = consultas.getFestivosUsr(DNI, fecha);
+	    			if(resultCons.next()){
+	    				 JOptionPane.showMessageDialog(null, "Ya ha tiene dia de permiso asignado");
+	    			}else{
+	                      resAñadir = consultas.insertFestivo(DNI, fecha, motivo);
+	                      if (resAñadir == false) {
+	                    	  JOptionPane.showMessageDialog(null, "No se ha podido realizar el ingreso");
+	                      }     
+	                 }
+	            }
         }
-    }//GEN-LAST:event_boton_AceptarActionPerformed
+				}
+		llenarTabla();
+	}
+	
+	private void eliminarEnBBDD() throws SQLException {
+		if(rowSelect.length>0){
+			
+			for(int i = 0; i<rowSelect.length;i++){
+			DNI = comboBox.getSelectedItem().toString();
+			fecha = table.getValueAt(rowSelect[i], 0).toString();
+				resEliminar = consultas.deleteFestivo(DNI, fecha);
+				if (resEliminar == false) {
+					JOptionPane.showMessageDialog(null, "No se ha podido eliminar el dia");
+				}
+			}
+			llenarTabla();
+		}else{
+			System.out.println("Error nada para borrar");
+		}
+		rowSelect =null;
+	
+	}
+	
+	private void llenarTabla() throws SQLException{
+		   DefaultTableModel modeloTabla = new DefaultTableModel(){
+			   @Override
+			  public boolean isCellEditable (int fila, int columna) {
+		        return false;
+		    }
+		   };
+		   table.setModel(modeloTabla);
+	        modeloTabla.addColumn("Fecha");
+	        modeloTabla.addColumn("Motivo");
+	        TableColumn columnaFecha = table.getColumn("Fecha");
+			columnaFecha.setPreferredWidth(1);
+			
+	        DNI = comboBox.getSelectedItem().toString();
+	        año = Integer.parseInt(obtenerAño());
+	       resultCons = consultas.getFestivosUsrAño(DNI, año);
+	       columnas = 2;
+	       Object[] fila = new Object[columnas];
+	      while(resultCons.next()){
+	        numColumna=0;
+	        fecha = resultCons.getObject(2).toString();
+	        fila[numColumna] = fecha.substring(0, 10);
+	        fila[numColumna+1] = resultCons.getObject(3).toString();
+	        modeloTabla.addRow(fila);
+	      }
+	      //Consultar festivos año siguiente.
+	      año++;
+	      resultCons = consultas.getFestivosUsrAño(DNI, año);
+	      while(resultCons.next()){
+		        numColumna=0;
+		        fecha = resultCons.getObject(2).toString();
+		        fila[numColumna] = fecha.substring(0, 10);
+		        fila[numColumna+1] = resultCons.getObject(3).toString();
+		        modeloTabla.addRow(fila);
+		      }
+	}
+	
+	private void llenarCombo() {
+		 if (comboBox.getItemCount() > 0) {
+			 comboBox.removeAllItems();
+         }
 
-    private void check_todosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_check_todosActionPerformed
-        if (check_todos.isSelected()) {
-            combo_DNI.setEnabled(false);
-
-        } else {
-            combo_DNI.setEnabled(true);
-        }
-    }//GEN-LAST:event_check_todosActionPerformed
-
-    private void boton_salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_salirActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_boton_salirActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Festivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Festivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Festivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Festivos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Festivos().setVisible(true);
-            }
-        });
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton boton_Aceptar;
-    private javax.swing.JButton boton_ayuda;
-    private javax.swing.JButton boton_salir;
-    private javax.swing.JTextField campo_fecha;
-    private javax.swing.JTextField campo_motivo;
-    private javax.swing.JCheckBox check_todos;
-    private javax.swing.JComboBox combo_DNI;
-    private javax.swing.JLabel etiqueta_DNI;
-    private javax.swing.JLabel etiqueta_fecha;
-    private javax.swing.JLabel etiqueta_motivo;
-    // End of variables declaration//GEN-END:variables
-
-    private void llenarComboUser() {
-        try {
-            if (combo_DNI.getItemCount() > 0) {
-                combo_DNI.removeAllItems();
-            }
-
-            consulta = consultas.getUsuarios();
-            while (consulta.next()) {
-                combo_DNI.addItem(consulta.getString("DNI"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Festivos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void initHelp() {
-        HelpBroker hb;
-        HelpSet helpset;
-        try {
-            File fichero = new File("help/help_set.hs");
-            URL hsURL = fichero.toURI().toURL();
-            helpset = new HelpSet(getClass().getClassLoader(), hsURL);
-            hb = helpset.createHelpBroker();
-            hb.enableHelpKey(this.getContentPane(), "general", helpset);
-            hb.enableHelpOnButton(boton_ayuda, "ventana_ges_festivo", helpset);
-        } catch (Exception e) {
-            //Logger.getLogger(Logeo.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error al cargar la ayuda" + e);
-        }
+         consulta = consultas.getUsuarios();
+         try {
+			while (consulta.next()) {
+				 comboBox.addItem(consulta.getString("DNI"));
+			 }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+	}
+	
+	private String obtenerAño() {
+        java.util.Date date = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy");
+        String fecha = sdf.format(date);
+        return fecha;
     }
 }
+
