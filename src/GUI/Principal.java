@@ -33,7 +33,7 @@ import pdf.GenerarInforme;
 
 public class Principal extends javax.swing.JFrame {
 
-	private GenerarInforme generar = new GenerarInforme();
+	
     private ConsultasSQL consultas;
     private ResultSet resultCons = null;
     private static Usuario usuarioActual;
@@ -118,9 +118,8 @@ public class Principal extends javax.swing.JFrame {
         crear_backup = new javax.swing.JMenuItem();
         restaurar = new javax.swing.JMenuItem();
 
-        menu_informes = new javax.swing.JMenu();
-        informe_mensual = new javax.swing.JMenuItem();
-        informe_mensual_usuario = new javax.swing.JMenuItem();
+        menu_informes = new javax.swing.JButton();
+       
         jMenu2.setText("File");
         jMenuBar2.add(jMenu2);
 
@@ -188,7 +187,7 @@ public class Principal extends javax.swing.JFrame {
         etiqueta_nombre.setText("Nombre:");
 
         campo_correo.setBackground(new java.awt.Color(255, 255, 255));
-        campo_correo.setFont(new java.awt.Font("Tahoma", 3, 14)); // NOI18N
+        campo_correo.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
 
         etiqueta_correo.setBackground(new java.awt.Color(255, 255, 255));
         etiqueta_correo.setFont(new java.awt.Font("Tahoma", 1, 15)); // NOI18N
@@ -535,15 +534,13 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(menu_backup);
         
-        menu_informes.setText("Generar Informe"); 
-        informe_mensual.setText("Informe Mensual");
-        informe_mensual_usuario.setText("Informe Mensual Usuario");
-        menu_informes.add(informe_mensual);
-        menu_informes.add(informe_mensual_usuario);
-        menu_informes.setEnabled(false);
+        menu_informes.setText("Informe"); 
+       
+      
+        menu_informes.setEnabled(true);
         jMenuBar1.add(menu_informes);
         
-        informe_mensual.addActionListener(new java.awt.event.ActionListener() {
+        menu_informes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
 					informeMensualActionPerformed(evt);
@@ -554,16 +551,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         
-        informe_mensual_usuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-					informeMensualUsuarioActionPerformed(evt);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
+       
         
        
 
@@ -616,13 +604,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowOpened
     
-    private void informeMensualActionPerformed(java.awt.event.ActionEvent evt) throws Exception {//GEN-FIRST:event_cerrar_sesionActionPerformed
-       generar.generarInformeMensual();
+    private void informeMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrar_sesionActionPerformed
+         GenerarInforme generar = new GenerarInforme(usuarioActual);
+         generar.setVisible(true);
     }//GEN-LAST:event_cerrar_sesionActionPerformed
     
-    private void informeMensualUsuarioActionPerformed(java.awt.event.ActionEvent evt) throws Exception{//GEN-FIRST:event_cerrar_sesionActionPerformed
-       
-    }//GEN-LAST:event_cerrar_sesionActionPerformed
+   
 
     private void cerrar_sesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrar_sesionActionPerformed
         this.dispose();
@@ -822,9 +809,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu menu_fichajes;
     private javax.swing.JMenu mnAdministrador;
     private javax.swing.JMenu menu_usuarios;
-    private javax.swing.JMenu menu_informes;
-    private javax.swing.JMenuItem informe_mensual;
-    private javax.swing.JMenuItem informe_mensual_usuario;
+    
+    private javax.swing.JButton menu_informes;
+   
     private javax.swing.JMenuItem restaurar;
     private javax.swing.JMenuItem salir;
     private javax.swing.JTable tabla_festivos;
@@ -840,7 +827,7 @@ public class Principal extends javax.swing.JFrame {
             menu_backup.setEnabled(true);
             administrar_usuarios.setEnabled(true);
             mnAdministrador.setEnabled(true);
-            menu_informes.setEnabled(true);
+           
         }
     }
 
@@ -996,7 +983,6 @@ public class Principal extends javax.swing.JFrame {
 
     private void mostrasDatosBusqueda() {
         int numMes = combo_mes.getSelectedIndex() + 1;
-        
         if(numMes <10){
            String anio = combo_anios.getSelectedItem().toString();
            String mesStrin = "0" +numMes;

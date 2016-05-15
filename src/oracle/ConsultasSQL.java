@@ -269,4 +269,21 @@ public class ConsultasSQL {
         return false;
     }
 
+    public boolean deleteFestivos(String DNI) {
+        try {
+            return conexionBD.ejecutar("DELETE FROM FESTIVOS WHERE DNI="+DNI);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    public boolean deleteFichajes(String DNI) {
+        try {
+            return conexionBD.ejecutar("DELETE FROM FICHAJES WHERE DNI="+DNI);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

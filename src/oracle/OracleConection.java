@@ -50,6 +50,7 @@ public class OracleConection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
         return resultado;
     }
 
