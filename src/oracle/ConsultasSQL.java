@@ -227,6 +227,17 @@ public class ConsultasSQL {
         return false;
     }
 
+    
+    public boolean updateFechaFich(String ID, String fecha) {
+        try {
+            return conexionBD.ejecutar("update FIchajes set fecha= TO_DATE('"+ fecha + "', 'DD/MM/YYYY HH24:MI:SS') where ID_FICHAJE="+ID);
+        } catch (SQLException ex) {
+            Logger.getLogger(ConsultasSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    
+    
     public void updateFoto(String DNI, String urlFoto) {
 
         try {

@@ -24,12 +24,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+
+import com.itextpdf.text.log.SysoCounter;
+
 import oracle.ConsultasSQL;
 import usuarios.Usuario;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import pdf.GenerarInforme;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.GroupLayout;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -117,8 +125,6 @@ public class Principal extends javax.swing.JFrame {
         menu_backup = new javax.swing.JMenu();
         crear_backup = new javax.swing.JMenuItem();
         restaurar = new javax.swing.JMenuItem();
-
-        menu_informes = new javax.swing.JButton();
        
         jMenu2.setText("File");
         jMenuBar2.add(jMenu2);
@@ -236,98 +242,95 @@ public class Principal extends javax.swing.JFrame {
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(etiqueta_correo)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(etiqueta_DNI)
-                        .addComponent(etiqueta_nombre)
-                        .addComponent(etiqueta_cargo)
-                        .addComponent(etiqueta_extras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(etiqueta_horas, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(etiqueta_horasTotales)
-                    .addComponent(etiqueta_apellidos)
-                    .addComponent(etiqueta_horasRea, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(campo_DNI, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(campo_carg, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(campo_horas, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(campo_extras, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(campo_correo, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(campo_apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
-                        .addComponent(campo_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(campo_horasTotales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(campo_horasDiarias, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(102, 102, 102))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(68, 68, 68)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        			.addComponent(foto, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE)
+        			.addGap(18)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(etiqueta_correo)
+        				.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(etiqueta_DNI)
+        					.addComponent(etiqueta_nombre)
+        					.addComponent(etiqueta_cargo)
+        					.addComponent(etiqueta_extras, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(etiqueta_horas, GroupLayout.PREFERRED_SIZE, 112, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(etiqueta_horasTotales)
+        				.addComponent(etiqueta_apellidos)
+        				.addComponent(etiqueta_horasRea, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE))
+        			.addGap(31)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING, false)
+        					.addComponent(campo_DNI, GroupLayout.PREFERRED_SIZE, 102, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(campo_carg, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(campo_horas, GroupLayout.PREFERRED_SIZE, 137, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(campo_extras, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(campo_correo, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
+        					.addComponent(campo_apellidos, GroupLayout.DEFAULT_SIZE, 231, Short.MAX_VALUE)
+        					.addComponent(campo_nombre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        					.addComponent(campo_horasTotales, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(campo_horasDiarias, GroupLayout.PREFERRED_SIZE, 241, GroupLayout.PREFERRED_SIZE))
+        			.addGap(93))
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGap(68)
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 462, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(202, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(foto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(121, 121, 121))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(etiqueta_DNI)
-                            .addComponent(campo_DNI, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(etiqueta_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(campo_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(etiqueta_apellidos)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(etiqueta_correo)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(etiqueta_cargo))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(campo_apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(campo_carg, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(etiqueta_horas)
-                                    .addComponent(campo_horas, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(etiqueta_extras)
-                                    .addComponent(campo_extras, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(etiqueta_horasTotales))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(campo_horasTotales, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(campo_correo, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(etiqueta_horasRea)
-                            .addComponent(campo_horasDiarias, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGap(22)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addComponent(foto, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+        					.addGap(121))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(etiqueta_DNI)
+        						.addComponent(campo_DNI, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        					.addGap(18)
+        					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING, false)
+        						.addComponent(etiqueta_nombre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        						.addComponent(campo_nombre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        					.addGap(18)
+        					.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        						.addGroup(jPanel1Layout.createSequentialGroup()
+        							.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING, false)
+        								.addGroup(jPanel1Layout.createSequentialGroup()
+        									.addComponent(etiqueta_apellidos)
+        									.addGap(18)
+        									.addComponent(etiqueta_correo)
+        									.addGap(18)
+        									.addComponent(etiqueta_cargo))
+        								.addGroup(jPanel1Layout.createSequentialGroup()
+        									.addComponent(campo_apellidos, GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+        									.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        									.addComponent(campo_carg, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)))
+        							.addGap(18)
+        							.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        								.addComponent(etiqueta_horas)
+        								.addComponent(campo_horas, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+        							.addGap(18)
+        							.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        								.addComponent(etiqueta_extras)
+        								.addComponent(campo_extras, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)))
+        						.addGroup(jPanel1Layout.createSequentialGroup()
+        							.addGap(42)
+        							.addComponent(campo_correo, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)))
+        					.addGap(18)
+        					.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(etiqueta_horasTotales)
+        						.addComponent(campo_horasTotales, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE))
+        					.addGap(18)
+        					.addGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        						.addComponent(etiqueta_horasRea)
+        						.addComponent(campo_horasDiarias, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE))
+        					.addGap(49)))
+        			.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+        			.addContainerGap(21, Short.MAX_VALUE))
         );
+        jPanel1.setLayout(jPanel1Layout);
 
         jPanel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -361,7 +364,7 @@ public class Principal extends javax.swing.JFrame {
                 combo_mesActionPerformed(evt);
             }
         });
-
+        //combo_mes.setSelectedIndex(2);
         combo_anios.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2015", "2016", "2017" }));
         combo_anios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -378,49 +381,55 @@ public class Principal extends javax.swing.JFrame {
             tabla_festivos.getColumnModel().getColumn(3).setResizable(false);
             tabla_festivos.getColumnModel().getColumn(4).setResizable(false);
         }
+        
+        comboTipoSalida = new JComboBox();
+        comboTipoSalida.setModel(new DefaultComboBoxModel(new String[] {" ", "Comision Servicios", "Tareas Sindicales", "Consulta Medica"}));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addComponent(combo_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(49, 49, 49)
-                        .addComponent(combo_anios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(boton_ingreso)
-                        .addGap(65, 65, 65)
-                        .addComponent(boton_salida)))
-                .addContainerGap(48, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 462, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+        	jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGap(166)
+        					.addComponent(combo_mes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        					.addGap(49)
+        					.addComponent(combo_anios, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(jPanel2Layout.createSequentialGroup()
+        					.addGap(36)
+        					.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        						.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 462, GroupLayout.PREFERRED_SIZE)
+        						.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 462, GroupLayout.PREFERRED_SIZE))))
+        			.addContainerGap(48, Short.MAX_VALUE))
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addContainerGap(90, Short.MAX_VALUE)
+        			.addComponent(boton_ingreso)
+        			.addGap(52)
+        			.addComponent(boton_salida)
+        			.addGap(61)
+        			.addComponent(comboTipoSalida, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
+        			.addGap(93))
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(boton_ingreso)
-                    .addComponent(boton_salida))
-                .addGap(36, 36, 36)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(combo_mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combo_anios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(63, 63, 63))
+        	jPanel2Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel2Layout.createSequentialGroup()
+        			.addGap(43)
+        			.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
+        			.addGap(24)
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+        				.addComponent(comboTipoSalida, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        					.addComponent(boton_salida)
+        					.addComponent(boton_ingreso)))
+        			.addPreferredGap(ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+        			.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 183, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(jPanel2Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(combo_mes, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(combo_anios, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        			.addGap(63))
         );
+        jPanel2.setLayout(jPanel2Layout);
 
         jMenuBar1.setMaximumSize(new java.awt.Dimension(264, 1024));
 
@@ -495,7 +504,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1.add(mnAdministrador);
         gestion_permisos = new javax.swing.JMenuItem();
        
-                gestion_permisos.setText("Festivos");
+                gestion_permisos.setText("Gestion  festivos");
                 gestion_permisos.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
                         gestion_permisosActionPerformed(evt);
@@ -510,7 +519,39 @@ public class Principal extends javax.swing.JFrame {
                 		trabajadores_fichajeActionPerformed(evt);
                 	}
                 });
+                
+                mntmGestionFichajes = new JMenuItem("Gestion fichajes");
+                
+                mntmGestionFichajes.addActionListener(new ActionListener() {
+                	public void actionPerformed(ActionEvent evt) {
+                		gestion_fichajesActionPerformed(evt);
+                	}
+                });
+                
+                
+                
+                mnAdministrador.add(mntmGestionFichajes);
                 mnAdministrador.add(trabajadores_fichaje);
+                
+                mntmInforme = new JMenuItem("Informe");
+             
+                
+                
+                
+                mntmInforme.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        try {
+        					informeMensualActionPerformed(evt);
+        				} catch (Exception e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+                    }
+                });
+                
+                
+                
+                mnAdministrador.add(mntmInforme);
 
         menu_backup.setText("Copia de seguridad");
         menu_backup.setEnabled(false);
@@ -533,23 +574,6 @@ public class Principal extends javax.swing.JFrame {
         menu_backup.add(restaurar);
 
         jMenuBar1.add(menu_backup);
-        
-        menu_informes.setText("Informe"); 
-       
-      
-        menu_informes.setEnabled(true);
-        jMenuBar1.add(menu_informes);
-        
-        menu_informes.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-					informeMensualActionPerformed(evt);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            }
-        });
         
        
         
@@ -639,6 +663,7 @@ public class Principal extends javax.swing.JFrame {
 
             resultCons = consultas.getFichajes(usuarioActual.getDni());
 
+            
             if (resultCons.next() == false) {
                 consultas.insertFichaje(usuarioActual.getDni(), fecha, "INGRESO");
                 llenarDatosFichajes(tabla_fichajesTotales, "TOTAL", null);
@@ -647,17 +672,15 @@ public class Principal extends javax.swing.JFrame {
                 if (resultCons.getString("TIPO").equals("INGRESO")) {
                     JOptionPane.showMessageDialog(null, "NO SE PUEDE INICIAR UNA ENTRADA, SIN PRODUCIRSE UNA SALIDA");
                 } else {
-                    if (usuarioActual.getHorasMensualesTraba() >= (usuarioActual.getNumeroHoras()*3600000)) {
-                    	
-                        JOptionPane.showMessageDialog(null, "SUPERADAS LAS HORAS MENSUALES, NO SE PERMITE REALIZAR HORAS EXTRA");
-                    }else{
+                 
                     consultas.insertFichaje(usuarioActual.getDni(), fecha, "INGRESO");
                     llenarDatosFichajes(tabla_fichajesTotales, "TOTAL", null);
                     llenarDatosFichajes(tabla_fichajesDiario, "DIARIO", null);
-                    }
+                    
                 }
                 consultas.cerrar();
             }
+            
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -676,12 +699,21 @@ public class Principal extends javax.swing.JFrame {
                 if (resultCons.getString("TIPO").equals("SALIDA")) {
                     JOptionPane.showMessageDialog(null, "NO SE HA PRODUCIDO NINGUNA ENTRADA");
                 } else {
-                    System.out.println(fecha);
                     consultas.insertFichaje(usuarioActual.getDni(), fecha, "SALIDA");
                     llenarDatosFichajes(tabla_fichajesTotales, "TOTAL", null);
                     llenarDatosFichajes(tabla_fichajesDiario, "DIARIO", null);
+                    String tipoSalida = comboTipoSalida.getSelectedItem().toString();
+                    String dia = fecha.substring(0, 10);
+                    String Hora = fecha.substring(10,18);
+                    
+                    if(!tipoSalida.equals(" ")){
+                    	consultas.insertFestivo(usuarioActual.getDni(), dia ,tipoSalida);
+                    	  cargarVacaciones(tabla_festivos, "ENTRADA", null);
+                    }              
                 }
             }
+            
+            
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -725,31 +757,12 @@ public class Principal extends javax.swing.JFrame {
 	   consulta_fichajes.setVisible(true);    	
 	}
     
-    public static void main(String args[]) throws SQLException {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void gestion_fichajesActionPerformed(java.awt.event.ActionEvent evt) {
+	    Fichajes fichajes = new Fichajes();
+	    fichajes.setVisible(true);    	
+	}
+    
 
-        /* Create and displaytt the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Principal().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Menu_sistema;
     private javax.swing.JMenuItem administrar_usuarios;
@@ -809,8 +822,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu menu_fichajes;
     private javax.swing.JMenu mnAdministrador;
     private javax.swing.JMenu menu_usuarios;
-    
-    private javax.swing.JButton menu_informes;
    
     private javax.swing.JMenuItem restaurar;
     private javax.swing.JMenuItem salir;
@@ -818,6 +829,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tabla_fichajesDiario;
     private javax.swing.JTable tabla_fichajesTotales;
     private JMenuItem trabajadores_fichaje;
+    private JMenuItem mntmInforme;
+    private JMenuItem mntmGestionFichajes;
+    private JComboBox comboTipoSalida;
     
    
     // End of variables declaration//GEN-END:variables
