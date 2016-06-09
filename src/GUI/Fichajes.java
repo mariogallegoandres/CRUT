@@ -52,6 +52,7 @@ public class Fichajes extends JFrame {
 	private ResultSet resultCons = null;
 	public int[] rowSelect ;
 	
+	int prueba;
 	
 	private JTable table;
 	public int[] indicesfilasSeleccionadas;
